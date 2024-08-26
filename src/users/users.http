@@ -1,0 +1,29 @@
+### create user
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "name": "Roberto",
+    "family": "Araneda",
+    "email": "roberto@mail.com",
+    "password": "123456",
+    "isActive": true
+}
+
+### get users
+GET http://localhost:3000/users
+
+### get user by id  
+GET http://localhost:3000/users/1
+
+### update user
+PATCH http://localhost:3000/users/1
+Content-Type: application/json
+
+{
+  "password": "123456"
+}
+
+### delete user
+DELETE http://localhost:3000/users/1
+
