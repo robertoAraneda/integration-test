@@ -228,6 +228,145 @@ No Encontrado (404 Not Found):
 }
 ```
 
+### 1. Crear Role
+
+- **URL:** `/roles`
+- **Método HTTP:** `POST`
+- **Descripción:** Crea un nuevo role en el sistema.
+- **Cuerpo de la Solicitud:**
+
+
+  ```json
+  {
+    "name": "admin"
+  }
+  ```
+
+
+### Validaciones:
+
+name: Requerido, debe ser una cadena no vacía.
+
+
+### Respuestas:
+
+### Éxito (201 Created):
+
+```json
+{
+  "id": 1,
+  "name": "admin",
+  "createdAt": "2024-08-26T12:00:00.000Z",
+  "updatedAt": "2024-08-26T12:00:00.000Z"
+}
+```
+
+### 2. Obtener Todos los Roles
+
+- **URL:** `/roles`
+- **Método HTTP:** `GET`
+- **Descripción:** Recupera una lista de todos los roles registrados
+
+### Respuestas:
+
+### Éxito (200 OK):
+
+```json
+[
+  {
+    "id": 1,
+    "name": "admin",
+    "createdAt": "2024-08-26T12:00:00.000Z",
+    "updatedAt": "2024-08-26T12:00:00.000Z"
+  },
+  {
+    "id": 2,
+    "name": "user",
+    "createdAt": "2024-08-26T12:00:00.000Z",
+    "updatedAt": "2024-08-26T12:00:00.000Z"
+  }
+]
+```
+### 3. Obtener Role por ID
+
+- **URL:** `/roles/:id`
+- **Método HTTP:** `GET`
+- **Descripción:** Recupera los detalles de un rol específico mediante su ID.
+
+### Parámetros de Ruta:
+
+| Parámetro | Tipo   | Descripción                        |
+|-----------|--------|------------------------------------|
+| `id`      | string | ID único del rol a recuperar   |
+
+### Respuestas:
+
+Éxito (200 OK):
+
+```json
+{
+  "id": 1,
+  "name": "admin",
+  "createdAt": "2024-08-26T12:00:00.000Z",
+  "updatedAt": "2024-08-26T12:00:00.000Z"
+}
+```
+
+### 4. Actualizar Usuario
+
+- **URL:** `/roles/:id`
+- **Método HTTP:** `PATCH`
+- **Descripción:** Actualiza la información de un role existente.
+- **Parametros de ruta** 
+
+| Parámetro | Tipo   | Descripción                        |
+|-----------|--------|------------------------------------|
+| `id`      | string | ID único del role a actualizar  |
+
+
+- **Cuerpo de la Solicitud:**
+
+El cuerpo debe seguir la estructura definida en UpdateUserDto. Asumiendo que UpdateUserDto permite campos opcionales, los campos disponibles son los mismos que en CreateUserDto, pero no todos son obligatorios.
+
+```json
+{
+  "name": "new QA"
+}
+```
+### Validaciones:
+
+- **name**: Opcional, si se proporciona, debe ser una cadena no vacía.
+
+### Respuestas:
+
+Éxito (200 OK):
+
+```json
+{
+  "id": 1,
+  "name": "QA",
+  "createdAt": "2024-08-26T12:00:00.000Z",
+  "updatedAt": "2024-08-26T14:00:00.000Z"
+}
+```
+
+### 5. Eliminar Role
+
+- **URL:** `/roles/:id`
+- **Método HTTP:** `DELETE`
+- **Descripción:** Elimina un rol existente del sistema.
+- **Parametros de ruta** 
+
+| Parámetro | Tipo   | Descripción                        |
+|-----------|--------|------------------------------------|
+| `id`      | string | ID único del rol a actualizar  |
+
+### Respuestas:
+
+Éxito (204 No Content): Indica que la operación se realizó correctamente y que no hay contenido que devolver.
+
+______________
+
 DTOs (Data Transfer Objects)
 CreateUserDto
 Define la estructura y validaciones para la creación de un usuario.
