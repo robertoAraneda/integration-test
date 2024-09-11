@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 
@@ -12,6 +12,7 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
   });
 
@@ -31,32 +32,56 @@ describe('AppController (e2e)', () => {
     expect(user).toHaveProperty('updatedAt');
   });
 
-  it('/users (POST)', async () => {
-    //prepare
-    const body = {
-      name: 'Test',
-      family: 'User',
-      email: 'test@test.com',
-      password: 'password',
-      isActive: true,
-    };
+  describe('/users (POST)', () => {
+    it('should create an user successfully', async () => {
+      //prepare
+      const body = {
+        name: 'Test',
+        family: 'User',
+        email: 'test@test.com',
+        password: 'password',
+        isActive: true,
+      };
 
-    //act
-    const response = await request(app.getHttpServer())
-      .post('/users')
-      .send(body);
+      //act
+      const response = await request(app.getHttpServer())
+        .post('/users')
+        .send(body);
 
-    //assert
-    expect(response.status).toBe(201); //created
+      //assert
+      expect(response.status).toBe(201); //created
 
-    expect(response.body).toHaveProperty('id');
-    expect(response.body).toHaveProperty('name', body.name);
-    expect(response.body).toHaveProperty('family', body.family);
-    expect(response.body).toHaveProperty('email', body.email);
-    expect(response.body).toHaveProperty('password', body.password);
-    expect(response.body).toHaveProperty('isActive', body.isActive);
-    expect(response.body).toHaveProperty('createdAt');
-    expect(response.body).toHaveProperty('updatedAt');
+      expect(response.body).toHaveProperty('id');
+      expect(response.body).toHaveProperty('name', body.name);
+      expect(response.body).toHaveProperty('family', body.family);
+      expect(response.body).toHaveProperty('email', body.email);
+      expect(response.body).toHaveProperty('password', body.password);
+      expect(response.body).toHaveProperty('isActive', body.isActive);
+      expect(response.body).toHaveProperty('createdAt');
+      expect(response.body).toHaveProperty('updatedAt');
+    });
+
+    test('should return 400 if name is not provided', async () => {
+      // prepare
+      const body = {
+        name: '',
+        family: 'User',
+        email: 'test@test.com',
+        password: 'password',
+        isActive: true,
+      };
+
+      // act
+
+      const response = await request(app.getHttpServer())
+        .post('/users')
+        .send(body);
+
+      //assert
+      expect(response.status).toBe(400); //bad request
+      expect(response.body).toHaveProperty('error', 'Bad Request');
+      expect(response.body).toHaveProperty('message', ['Name is required']);
+    });
   });
 
   it('/users/:id (GET)', async () => {
