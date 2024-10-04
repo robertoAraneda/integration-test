@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Repository } from 'typeorm';
+import { User } from '../users/entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>,
+  ) {}
   private static users = [
     {
       id: 1,
@@ -17,7 +24,12 @@ export class UsersService {
     },
   ];
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
+    const user = await this.usersRepository.save(createUserDto);
+
+    console.log(user);
+
+    /*
     const id = UsersService.users
       .map((user) => user.id)
       .sort((a, b) => a - b)
@@ -31,30 +43,34 @@ export class UsersService {
     };
 
     UsersService.users.push(user);
+    */
 
     return user;
   }
 
   findAll() {
-    return UsersService.users;
+    return this.usersRepository.find();
   }
 
   findOne(id: number) {
-    return UsersService.users.find((user) => user.id === id);
+    return this.usersRepository.findOneBy({
+      id,
+    });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    const user = UsersService.users.find((user) => user.id === id);
-    if (user) {
-      Object.assign(user, updateUserDto);
-    }
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const userFounded = await this.usersRepository.findOneBy({
+      id,
+    });
+
+    const user = this.usersRepository.merge(userFounded, updateUserDto);
+
+    this.usersRepository.save(user);
+
     return user;
   }
 
   remove(id: number): void {
-    const index = UsersService.users.findIndex((user) => user.id === id);
-    if (index >= 0) {
-      UsersService.users.splice(index, 1);
-    }
+    this.usersRepository.delete(id);
   }
 }

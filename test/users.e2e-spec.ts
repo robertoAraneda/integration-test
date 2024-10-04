@@ -5,6 +5,7 @@ import { AppModule } from './../src/app.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  let createdUserId: number;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -22,6 +23,7 @@ describe('AppController (e2e)', () => {
     expect(response.body.length).toBeGreaterThan(0);
 
     const user = response.body[0];
+    console.log(user);
     expect(user).toHaveProperty('id');
     expect(user).toHaveProperty('name');
     expect(user).toHaveProperty('family');
@@ -59,6 +61,9 @@ describe('AppController (e2e)', () => {
       expect(response.body).toHaveProperty('isActive', body.isActive);
       expect(response.body).toHaveProperty('createdAt');
       expect(response.body).toHaveProperty('updatedAt');
+
+      // save the id for future tests
+      createdUserId = response.body.id;
     });
 
     test('should return 400 if name is not provided', async () => {
@@ -82,11 +87,37 @@ describe('AppController (e2e)', () => {
       expect(response.body).toHaveProperty('error', 'Bad Request');
       expect(response.body).toHaveProperty('message', ['Name is required']);
     });
+
+    it('should return 400 if family is not provided', async () => {
+      // prepare
+      const body = {
+        name: 'name',
+        family: '',
+        email: 'test@test.com',
+        password: 'password',
+        isActive: true,
+      };
+
+      // act
+
+      const response = await request(app.getHttpServer())
+        .post('/users')
+        .send(body);
+
+      //assert
+      expect(response.status).toBe(400); //bad request
+      expect(response.body).toHaveProperty('error', 'Bad Request');
+      expect(response.body).toHaveProperty('message', [
+        'Atributo Family es requerido.',
+      ]);
+    });
+
+    // generate new tests
   });
 
   it('/users/:id (GET)', async () => {
     //prepare
-    const id = 1;
+    const id = createdUserId;
 
     //act
     const response = await request(app.getHttpServer()).get(`/users/${id}`);
@@ -109,7 +140,7 @@ describe('AppController (e2e)', () => {
   it('/users/:id (PATCH)', async () => {
     //prepare
 
-    const id = 1;
+    const id = createdUserId;
     const body = {
       email: 'edited@gmail.com',
     };
@@ -121,7 +152,7 @@ describe('AppController (e2e)', () => {
 
     expect(response.status).toBe(200); //success
 
-    expect(response.body).toHaveProperty('id', 1);
+    expect(response.body).toHaveProperty('id', createdUserId);
     expect(response.body).toHaveProperty('name');
     expect(response.body).toHaveProperty('family');
     expect(response.body).toHaveProperty('email', 'edited@gmail.com');
@@ -132,7 +163,8 @@ describe('AppController (e2e)', () => {
   });
 
   it('/users/:id (DELETE)', async () => {
-    const response = await request(app.getHttpServer()).delete('/users/1');
+    const id = createdUserId;
+    const response = await request(app.getHttpServer()).delete(`/users/${id}`);
     expect(response.status).toBe(200); //204 no-content
     expect(response.body).toEqual({});
   });

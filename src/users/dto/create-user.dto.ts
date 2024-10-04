@@ -6,7 +6,9 @@ export class CreateUserDto {
   })
   name: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({
+    message: 'Atributo Family es requerido.',
+  })
   family: string;
 
   @IsEmail()

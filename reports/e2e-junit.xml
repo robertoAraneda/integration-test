@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="12" failures="0" errors="0" time="13.193">
+  <testsuite name="testControler (e2e)" errors="0" failures="0" skipped="0" timestamp="2024-10-04T14:51:48" time="9.309" tests="1">
+    <testcase classname="testControler (e2e) /test (POST) should create a test successfully" name="testControler (e2e) /test (POST) should create a test successfully" time="1.269">
+    </testcase>
+  </testsuite>
+  <testsuite name="AppController (e2e)" errors="0" failures="0" skipped="0" timestamp="2024-10-04T14:51:48" time="9.328" tests="1">
+    <testcase classname="AppController (e2e) / (GET)" name="AppController (e2e) / (GET)" time="1.301">
+    </testcase>
+  </testsuite>
+  <testsuite name="AppController (e2e)" errors="0" failures="0" skipped="0" timestamp="2024-10-04T14:51:48" time="10.493" tests="3">
+    <testcase classname="AppController (e2e) app should be defined" name="AppController (e2e) app should be defined" time="1.334">
+    </testcase>
+    <testcase classname="AppController (e2e) /roles (POST) should create a role successfully" name="AppController (e2e) /roles (POST) should create a role successfully" time="0.591">
+    </testcase>
+    <testcase classname="AppController (e2e) /roles (POST) should return 400 if role&apos;s name is not provided" name="AppController (e2e) /roles (POST) should return 400 if role&apos;s name is not provided" time="0.359">
+    </testcase>
+  </testsuite>
+  <testsuite name="AppController (e2e)" errors="0" failures="0" skipped="0" timestamp="2024-10-04T14:51:48" time="12.079" tests="7">
+    <testcase classname="AppController (e2e) /users (GET)" name="AppController (e2e) /users (GET)" time="1.379">
+    </testcase>
+    <testcase classname="AppController (e2e) /users (POST) should create an user successfully" name="AppController (e2e) /users (POST) should create an user successfully" time="0.632">
+    </testcase>
+    <testcase classname="AppController (e2e) /users (POST) should return 400 if name is not provided" name="AppController (e2e) /users (POST) should return 400 if name is not provided" time="0.4">
+    </testcase>
+    <testcase classname="AppController (e2e) /users (POST) should return 400 if family is not provided" name="AppController (e2e) /users (POST) should return 400 if family is not provided" time="0.268">
+    </testcase>
+    <testcase classname="AppController (e2e) /users/:id (GET)" name="AppController (e2e) /users/:id (GET)" time="0.267">
+    </testcase>
+    <testcase classname="AppController (e2e) /users/:id (PATCH)" name="AppController (e2e) /users/:id (PATCH)" time="0.547">
+    </testcase>
+    <testcase classname="AppController (e2e) /users/:id (DELETE)" name="AppController (e2e) /users/:id (DELETE)" time="0.535">
+    </testcase>
+  </testsuite>
+</testsuites>
